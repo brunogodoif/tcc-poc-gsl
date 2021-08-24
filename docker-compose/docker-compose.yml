@@ -1,0 +1,197 @@
+version: "3"
+services:
+  service-auth:
+    build:
+      context: ../autenticacao
+      dockerfile: ../autenticacao/docker-compose/Dockerfile.backendphp
+    image: service-auth
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../autenticacao:/var/www
+    networks:
+      - teste
+  nginx-service-auth:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../autenticacao
+      dockerfile: ../autenticacao/docker-compose/Dockerfile.nginx
+    image: nginx-service-auth
+    restart: unless-stopped
+    ports:
+      - "9090:80"
+    volumes:
+      - ../autenticacao:/var/www
+    networks:
+      - teste
+  service-gateway:
+    build:
+      context: ../gateway
+      dockerfile: ../gateway/docker-compose/Dockerfile.backendphp
+    image: service-gateway
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../gateway:/var/www
+    networks:
+      - teste
+  nginx-service-gateway:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../gateway
+      dockerfile: ../gateway/docker-compose/Dockerfile.nginx
+    image: nginx-service-gateway
+    restart: unless-stopped
+    ports:
+      - "9091:80"
+    volumes:
+      - ../gateway:/var/www
+    networks:
+      - teste
+  service-informacoes-cadastrais:
+    build:
+      context: ../modulo-informacoes-cadastrais
+      dockerfile: ../modulo-informacoes-cadastrais/docker-compose/Dockerfile.backendphp
+    image: service-informacoes-cadastrais
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../modulo-informacoes-cadastrais:/var/www
+    networks:
+      - teste
+  nginx-service-informacoes-cadastrais:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../modulo-informacoes-cadastrais
+      dockerfile: ../modulo-informacoes-cadastrais/docker-compose/Dockerfile.nginx
+    image: nginx-service-informacoes-cadastrais
+    restart: unless-stopped
+    ports:
+      - "9092:80"
+    volumes:
+      - ../modulo-informacoes-cadastrais:/var/www
+    networks:
+      - teste
+  service-servicos-cliente:
+    build:
+      context: ../modulo-servicos-cliente
+      dockerfile: ../modulo-servicos-cliente/docker-compose/Dockerfile.backendphp
+    image: service-servicos-cliente
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../modulo-servicos-cliente:/var/www
+    networks:
+      - teste
+  nginx-service-servicos-cliente:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../modulo-servicos-cliente
+      dockerfile: ../modulo-servicos-cliente/docker-compose/Dockerfile.nginx
+    image: nginx-service-servicos-cliente
+    restart: unless-stopped
+    ports:
+      - "9093:80"
+    volumes:
+      - ../modulo-servicos-cliente:/var/www
+    networks:
+      - teste
+  service-gestao-estrategia:
+    build:
+      context: ../modulo-gestao-estrategia
+      dockerfile: ../modulo-gestao-estrategia/docker-compose/Dockerfile.backendphp
+    image: service-gestao-estrategia
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../modulo-gestao-estrategia:/var/www
+    networks:
+      - teste
+  nginx-service-gestao-estrategia:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../modulo-gestao-estrategia
+      dockerfile: ../modulo-gestao-estrategia/docker-compose/Dockerfile.nginx
+    image: nginx-service-gestao-estrategia
+    restart: unless-stopped
+    ports:
+      - "9094:80"
+    volumes:
+      - ../modulo-gestao-estrategia:/var/www
+    networks:
+      - teste
+  service-dw-bi:
+    build:
+      context: ../modulo-dw-bi
+      dockerfile: ../modulo-dw-bi/docker-compose/Dockerfile.backendphp
+    image: service-dw-bi
+    restart: unless-stopped
+    working_dir: /var/www/
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 64M
+        reservations:
+          memory: 64M
+    volumes:
+      - ../modulo-dw-bi:/var/www
+    networks:
+      - teste
+  nginx-service-dw-bi:
+    build:
+      args:
+        server_conf: ./docker-compose/nginx/local.conf
+      context: ../modulo-dw-bi
+      dockerfile: ../modulo-dw-bi/docker-compose/Dockerfile.nginx
+    image: nginx-service-dw-bi
+    restart: unless-stopped
+    ports:
+      - "9095:80"
+    volumes:
+      - ../modulo-dw-bi:/var/www
+    networks:
+      - teste
+networks:
+  teste:
+    driver: bridge
