@@ -1,4 +1,4 @@
-# Projeto POC do Projeto Arquitetural  - Gestão de Serviços de Logística (GSL) -TCC 2021 - PUC Minas
+# POC - Projeto Arquitetural - Gestão de Serviços de Logística (GSL) -TCC 2021 - PUC Minas
 
 
 # Build
