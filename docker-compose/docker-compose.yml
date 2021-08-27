@@ -1,37 +1,5 @@
 version: "3"
 services:
-  service-auth:
-    build:
-      context: ../autenticacao
-      dockerfile: ../autenticacao/docker-compose/Dockerfile.backendphp
-    image: service-auth
-    restart: unless-stopped
-    working_dir: /var/www/
-    deploy:
-      replicas: 1
-      resources:
-        limits:
-          memory: 64M
-        reservations:
-          memory: 64M
-    volumes:
-      - ../autenticacao:/var/www
-    networks:
-      - teste
-  nginx-service-auth:
-    build:
-      args:
-        server_conf: ./docker-compose/nginx/local.conf
-      context: ../autenticacao
-      dockerfile: ../autenticacao/docker-compose/Dockerfile.nginx
-    image: nginx-service-auth
-    restart: unless-stopped
-    ports:
-      - "9090:80"
-    volumes:
-      - ../autenticacao:/var/www
-    networks:
-      - teste
   service-gateway:
     build:
       context: ../gateway
@@ -43,11 +11,15 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 64M
+          memory: 4G
         reservations:
-          memory: 64M
+          memory: 2G
     volumes:
       - ../gateway:/var/www
+    links:
+      - postgresql-db-auth
+      - nginx-service-servicos-cliente
+      - nginx-service-gestao-estrategia
     networks:
       - teste
   nginx-service-gateway:
@@ -192,6 +164,19 @@ services:
       - ../modulo-dw-bi:/var/www
     networks:
       - teste
+  postgresql-db-auth:
+    image: postgres
+    restart: always
+    env_file:
+      - ../gateway/docker-compose/postgres/database.env
+    ports:
+      - "15432:5432"
+    volumes:
+      - ../gateway/datadbs/postgres:/var/lib/postgresql/data
+      - ../gateway/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
+    networks:
+      - teste
+    container_name: postgresql-db-auth
 networks:
   teste:
     driver: bridge
