@@ -57,15 +57,16 @@ class AuthService
     public function validateJWT($token)
     {
         try {
+            $token = JWTAuth::getToken(($token) ?? null);
             //JWTAuth::getJWTProvider()->setSecret($this->secret_cortex);
             $apy = JWTAuth::getPayload($token)->toArray();
             return $apy;
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['message' => 'Token expired'], 401);
+            return response()->json(['message' => 'Token Expired'], 401);
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['message' => 'Token _invalid'], 401);
+            return response()->json(['message' => 'Token Invalid'], 401);
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['message' => 'Token absent, ' . $e->getMessage()], 401);
+            return response()->json(['message' => 'Token Absent'], 401);
         }
     }
 }

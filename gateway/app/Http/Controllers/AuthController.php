@@ -24,15 +24,9 @@ class AuthController extends Controller
 
     public function authValidate(Request $request)
     {
-        if (!isset($request['token'])) {
-            throw new \Exception('INVALID_TOKEN', 500);
-        }
-
-        $tokenRequest = JWTAuth::getToken(($request['token']) ?? null);
 
         $AuthService = new AuthService;
-
-        $tokenDataValidate = $AuthService->validateJWT($tokenRequest);
+        $tokenDataValidate = $AuthService->validateJWT($request->get('token'));
 
         if (is_object($tokenDataValidate)) {
             return $tokenDataValidate;
