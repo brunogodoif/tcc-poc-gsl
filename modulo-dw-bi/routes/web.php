@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd('modulo-dw-bi')
+    dd('modulo-dw-bi');
 });

@@ -14,5 +14,5 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    dd("modulo de serviços ao cliente")
+    dd("modulo de serviços ao cliente");
 });
