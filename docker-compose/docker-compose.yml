@@ -11,15 +11,29 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 4G
-        reservations:
           memory: 2G
+        reservations:
+          memory: 64M
     volumes:
       - ../gateway:/var/www
     links:
       - postgresql-db-auth
       - nginx-service-servicos-cliente
       - nginx-service-gestao-estrategia
+    depends_on:
+      - postgresql-db-auth
+    networks:
+      - teste
+  service-gateway-migrations:
+    image: service-gateway
+    working_dir: /var/www/
+    volumes:
+      - ../gateway:/var/www
+    links:
+      - postgresql-db-auth
+    depends_on:
+      - postgresql-db-auth
+    command: ./docker-compose/configure.sh
     networks:
       - teste
   nginx-service-gateway:
@@ -34,6 +48,8 @@ services:
       - "9091:80"
     volumes:
       - ../gateway:/var/www
+    depends_on:
+      - service-gateway
     networks:
       - teste
   service-informacoes-cadastrais:
@@ -66,6 +82,8 @@ services:
       - "9092:80"
     volumes:
       - ../modulo-informacoes-cadastrais:/var/www
+    depends_on:
+      - service-informacoes-cadastrais
     networks:
       - teste
   service-servicos-cliente:
@@ -98,6 +116,8 @@ services:
       - "9093:80"
     volumes:
       - ../modulo-servicos-cliente:/var/www
+    depends_on:
+      - service-servicos-cliente
     networks:
       - teste
   service-gestao-estrategia:
@@ -130,6 +150,8 @@ services:
       - "9094:80"
     volumes:
       - ../modulo-gestao-estrategia:/var/www
+    depends_on:
+      - service-gestao-estrategia
     networks:
       - teste
   service-dw-bi:
@@ -162,6 +184,8 @@ services:
       - "9095:80"
     volumes:
       - ../modulo-dw-bi:/var/www
+    depends_on:
+      - service-dw-bi
     networks:
       - teste
   postgresql-db-auth:
