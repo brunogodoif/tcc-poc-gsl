@@ -14,10 +14,6 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::post('auth', [AuthController::class, 'authLogin'])->name('auth.login');
 Route::get('auth', [AuthController::class, 'authValidate'])->name('auth.verify');
 Route::get('teste', [AuthController::class, 'teste'])->name('auth.verify');
