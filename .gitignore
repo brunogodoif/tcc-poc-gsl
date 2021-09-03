@@ -1,1 +1,4 @@
 gateway/datadbs/*
+modulo-informacoes-cadastrais/datadbs/*
+modulo-servicos-cliente/datadbs/*
+modulo-gestao-estrategia/datadbs/*
