@@ -1,8 +1,9 @@
 <?php
 
-use App\Http\Controllers\TesteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\FreteController;
+use App\Http\Controllers\TesteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,13 +17,4 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('calcular', [TesteController::class, 'teste'])->name('teste.teste');
-
-
-Route::get('/', function (Request $request) {
-    return "GET modulo informações cadastrais  -> " . ($request->get('name', 'ND')) . ' - ' . ($request->get('role', 'ND')) . '<-';
-});
-
-
-Route::post('/', function (Request $request) {
-    return "POST modulo informações cadastrais  -> " . ($request->get('name', 'ND')) . ' - ' . ($request->get('role', 'ND')) . '<-';
-});
+Route::get('frete/calc', [ShippingController::class, 'calc'])->name('frete.calc');

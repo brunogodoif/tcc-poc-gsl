@@ -46,12 +46,19 @@ class TesteController extends Controller
 
         $GeneralidadesTaxaDeRestriçãoAoTrafego =  $this->calcularGeneralidadesEServiçosAdicionaisTaxaRestriçãoAoTrafego($valorPreFreteBase);
 
-
         $GeneralidadesTaxaDePedagio =  $this->calcularGeneralidadesEServiçosAdicionaisTaxaDePedagio($novoPesoObitido);
 
         $GeneralidadesTaxaDeAgendamento =  $this->calcularGeneralidadesEServiçosAdicionaisAgendamento($valorPreFreteBase);
 
-        $valorFinal = $this->calcularValorFinalDoFrete([$fretePeso, $valorTaxaDeDespacho, $freteValor, $valorTaxaGerenciamentoDeRisco, $GeneralidadesTaxaDeRestriçãoAoTrafego, $GeneralidadesTaxaDePedagio, $GeneralidadesTaxaDeAgendamento]);
+        $valorFinal = $this->calcularValorFinalDoFrete([
+            $fretePeso,
+            $valorTaxaDeDespacho,
+            $freteValor,
+            $valorTaxaGerenciamentoDeRisco,
+            $GeneralidadesTaxaDeRestriçãoAoTrafego,
+            $GeneralidadesTaxaDePedagio,
+            $GeneralidadesTaxaDeAgendamento
+        ]);
 
         return $valorFinal;
     }
@@ -145,6 +152,7 @@ class TesteController extends Controller
 
     public function calcularValorFinalDoFrete(array $valores)
     {
+        dd($valores, array_sum($valores));
         return array_sum($valores);
     }
 }
