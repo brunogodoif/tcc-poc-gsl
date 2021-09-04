@@ -18,12 +18,15 @@ services:
       - ../gateway:/var/www
     links:
       - postgresql-db-auth
+      - nginx-service-informacoes-cadastrais
       - nginx-service-servicos-cliente
       - nginx-service-gestao-estrategia
+      - nginx-service-dw-bi
     depends_on:
       - postgresql-db-auth
     networks:
-      - teste
+      - gateway-network
+      - informacoes-cadastrais-network
   service-gateway-migrations:
     image: service-gateway
     working_dir: /var/www/
@@ -35,7 +38,7 @@ services:
       - postgresql-db-auth
     command: ./docker-compose/configure.sh
     networks:
-      - teste
+      - gateway-network
   nginx-service-gateway:
     build:
       args:
@@ -51,7 +54,7 @@ services:
     depends_on:
       - service-gateway
     networks:
-      - teste
+      - gateway-network
   service-informacoes-cadastrais:
     build:
       context: ../modulo-informacoes-cadastrais
@@ -71,7 +74,7 @@ services:
     links:
       - postgresql-db-shippingcompany
     networks:
-      - teste
+      - informacoes-cadastrais-network
   service-informacoes-cadastrais-migrations:
     image: service-informacoes-cadastrais
     working_dir: /var/www/
@@ -83,7 +86,7 @@ services:
       - postgresql-db-shippingcompany
     command: ./docker-compose/configure.sh
     networks:
-      - teste
+      - informacoes-cadastrais-network
   nginx-service-informacoes-cadastrais:
     build:
       args:
@@ -92,14 +95,14 @@ services:
       dockerfile: ../modulo-informacoes-cadastrais/docker-compose/Dockerfile.nginx
     image: nginx-service-informacoes-cadastrais
     restart: unless-stopped
-    ports:
-      - "9092:80"
+    #ports:
+    #  - "9092:80"
     volumes:
       - ../modulo-informacoes-cadastrais:/var/www
     depends_on:
       - service-informacoes-cadastrais
     networks:
-      - teste
+      - informacoes-cadastrais-network
   service-servicos-cliente:
     build:
       context: ../modulo-servicos-cliente
@@ -117,7 +120,7 @@ services:
     volumes:
       - ../modulo-servicos-cliente:/var/www
     networks:
-      - teste
+      - gateway-network
   nginx-service-servicos-cliente:
     build:
       args:
@@ -133,7 +136,7 @@ services:
     depends_on:
       - service-servicos-cliente
     networks:
-      - teste
+      - gateway-network
   service-gestao-estrategia:
     build:
       context: ../modulo-gestao-estrategia
@@ -151,7 +154,7 @@ services:
     volumes:
       - ../modulo-gestao-estrategia:/var/www
     networks:
-      - teste
+      - gateway-network
   nginx-service-gestao-estrategia:
     build:
       args:
@@ -167,7 +170,7 @@ services:
     depends_on:
       - service-gestao-estrategia
     networks:
-      - teste
+      - gateway-network
   service-dw-bi:
     build:
       context: ../modulo-dw-bi
@@ -185,7 +188,7 @@ services:
     volumes:
       - ../modulo-dw-bi:/var/www
     networks:
-      - teste
+      - gateway-network
   nginx-service-dw-bi:
     build:
       args:
@@ -201,7 +204,7 @@ services:
     depends_on:
       - service-dw-bi
     networks:
-      - teste
+      - gateway-network
   postgresql-db-auth:
     image: postgres
     restart: always
@@ -213,7 +216,7 @@ services:
       - ../gateway/datadbs/postgres:/var/lib/postgresql/data
       - ../gateway/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
     networks:
-      - teste
+      - gateway-network
     container_name: postgresql-db-auth
   postgresql-db-shippingcompany:
     image: postgres
@@ -221,14 +224,15 @@ services:
     env_file:
       - ../modulo-informacoes-cadastrais/docker-compose/postgres/database.env
     ports:
-      - "25432:5433"
+      - "25432:5432"
     volumes:
       - ../modulo-informacoes-cadastrais/datadbs/postgres:/var/lib/postgresql/data
       - ../modulo-informacoes-cadastrais/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
     networks:
-      - teste
-    command: -p 5433
+      - informacoes-cadastrais-network
     container_name: postgresql-db-shippingcompany
 networks:
-  teste:
+  gateway-network:
+    driver: bridge
+  informacoes-cadastrais-network:
     driver: bridge

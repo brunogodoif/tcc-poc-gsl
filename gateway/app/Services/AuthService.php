@@ -57,7 +57,7 @@ class AuthService
     public function validateJWT($token)
     {
         try {
-            $token = JWTAuth::getToken(($token) ?? null);
+            $token = JWTAuth::setToken(($token) ?? null);
             //JWTAuth::getJWTProvider()->setSecret($this->secret_cortex);
             $apy = JWTAuth::getPayload($token)->toArray();
             return $apy;

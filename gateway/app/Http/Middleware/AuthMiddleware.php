@@ -21,7 +21,7 @@ class AuthMiddleware
             return $next($request);
         else {
             $AuthService = new AuthService;
-            $tokenDataValidate = $AuthService->validateJWT($request->get('token'));
+            $tokenDataValidate = $AuthService->validateJWT($request->header('Authorization'));
             if (is_object($tokenDataValidate)) {
                 return $tokenDataValidate;
             } else {

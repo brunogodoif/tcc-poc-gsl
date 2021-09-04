@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ServiceInformacoesCadastraisController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -16,5 +17,6 @@ use App\Http\Controllers\AuthController;
 
 Route::post('auth', [AuthController::class, 'authLogin'])->name('auth.login');
 Route::get('auth', [AuthController::class, 'authValidate'])->name('auth.verify');
-Route::get('teste', [AuthController::class, 'teste'])->name('auth.verify');
-Route::get('teste2', [AuthController::class, 'teste2'])->name('auth.verify');
+
+Route::get('shippingcompany/calculateshipping', [ServiceInformacoesCadastraisController::class, 'calculateshipping'])->name('informacoes-cadastrais.calculateshipping');
+
