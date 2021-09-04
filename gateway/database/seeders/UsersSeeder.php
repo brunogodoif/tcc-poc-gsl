@@ -29,5 +29,18 @@ class UsersSeeder extends Seeder
                 'updated_at' => Carbon::now()
             ]);
         }
+
+        $user = DB::table('users.users')->whereEmail('diogooliveiracoelho@gmail.com')->get();
+        if ($user->isEmpty()) {
+            DB::table('users.users')->insert([
+                'name' => "Diogo Oliveira Coelho",
+                'email' => "diogooliveiracoelho@gmail.com",
+                'password' =>  Hash::make('654321'),
+                'profile_id' => 1,
+                'status' => true,
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ]);
+        }
     }
 }
