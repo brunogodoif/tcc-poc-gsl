@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Services\ShippingService;
 use Illuminate\Http\Request;
 
-class FreteController extends Controller
+class ShippingController extends Controller
 {
     public function calc(Request $request)
     {
         $ShippingService = new ShippingService;
-        return $ShippingService->caclFrete(
+
+        $validateInputs = $this->validateInputsRequest($request);
+
+        if ($validateInputs == false) {
+            return response()->json(['message' => "Invalid parameters"], 500);
+        }
+
+        $resultCalcFrete = $ShippingService->caclFrete(
             $request->get('weight'),
             $request->get('invoice'),
             $request->get('width'),
@@ -19,5 +26,24 @@ class FreteController extends Controller
             $request->get('zipCodeSource'),
             $request->get('zipCodeDestiny'),
         );
+
+        if (isset($resultCalcFrete['message'])) {
+            return response()->json(['message' => $resultCalcFrete['message']],  $resultCalcFrete['code']);
+        }
+
+        return response()->json($resultCalcFrete,  200);
+    }
+
+
+    public function validateInputsRequest($request)
+    {
+        if (
+            !$request->has(['weight', 'invoice', 'width', 'length', 'height', 'zipCodeSource', 'zipCodeDestiny'])
+            or
+            !$request->filled(['weight', 'invoice', 'width', 'length', 'height', 'zipCodeSource', 'zipCodeDestiny'])
+        ) {
+            return false;
+        }
+        return true;
     }
 }

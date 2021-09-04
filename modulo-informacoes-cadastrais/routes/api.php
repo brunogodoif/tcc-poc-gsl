@@ -1,8 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FreteController;
+use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TesteController;
 
 /*

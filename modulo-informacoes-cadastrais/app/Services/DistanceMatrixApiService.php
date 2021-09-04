@@ -2,10 +2,7 @@
 
 namespace App\Services;
 
-use Throwable;
-use App\Models\ShippingWeight;
 use Illuminate\Support\Facades\Http;
-use App\Services\calculoFrete\FreteCalculator;
 use Exception;
 
 class DistanceMatrixApiService
@@ -30,8 +27,11 @@ class DistanceMatrixApiService
 
             if ($response->getStatusCode() == 200) {
                 $resultBodyRequest = (object) json_decode($response->getBody()->getContents());
-                if (!isset($resultBodyRequest->rows[0]->elements[0]->distance->value) or $resultBodyRequest->status != "OK") {
-                    throw new Exception("");
+                if ($resultBodyRequest->status != "OK") {
+                    throw new Exception($resultBodyRequest->status);
+                }
+                if (!isset($resultBodyRequest->rows[0]->elements[0]->distance->value)) {
+                    throw new Exception("Fail...");
                 }
                 $distanceValueInKm = ($resultBodyRequest->rows[0]->elements[0]->distance->value) / 1000;
                 return (float)$distanceValueInKm;
@@ -39,7 +39,6 @@ class DistanceMatrixApiService
                 throw new Exception("DistanceMatrix API request failed");
             }
         } catch (\Exception $th) {
-            dd($th);
             if ($th->getMessage() != '') {
                 return ["message" => $th->getMessage()];
             }

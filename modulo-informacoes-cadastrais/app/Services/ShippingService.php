@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ShippingWeight;
+use App\Services\DistanceMatrixApiService;
 use App\Services\calculoFrete\ShippingCalculator;
 
 class ShippingService
@@ -20,52 +21,62 @@ class ShippingService
         $DistanceMatrixApiService = new DistanceMatrixApiService;
         $distance = $DistanceMatrixApiService->calculateDistanceBetweenZipCodes($zipCodeSource, $zipCodeDestiny);
 
-        if ($distance == false) {
-            return response()->json(['message' => 'It was not possible to obtain the distance between the addresses entered'], 500);
+        if ($distance == false or !is_numeric($distance)) {
+            return [
+                'message' => 'It was not possible to obtain the distance between the addresses entered',
+                'code' => 500
+            ];
         }
 
-        //INSTANCIA UM ShippingCalculator QUE TEM MÉTODOS PARA CALCULOS DO FRETE
-        $shippingCalculator = new ShippingCalculator();
+        try {
+            //INSTANCIA UM ShippingCalculator QUE TEM MÉTODOS PARA CALCULOS DO FRETE
+            $shippingCalculator = new ShippingCalculator();
 
-        //ANTES DE CALCULAR O FRETE PESO, É PRECISO VERIFICAR SE O FRETE DEVE SER COBRADO COM BASE NO PESO OU NO VOLUME DA CARGA (CUBAGEM)
-        $cubage = $shippingCalculator->calcCubage($width, $length, $height);
-        //FAZ CHAMADA A UM METODO QUE FAZ A VERIFICAÇÃO SE O FRETE DEVE SER COBRADO COM BASE NO PESO OU NO VOLUME DA CARGA(CUBAGEM)
-        $newWeightobtained = $shippingCalculator->verifyIfWeightCubage($cubage, $weight);
+            //ANTES DE CALCULAR O FRETE PESO, É PRECISO VERIFICAR SE O FRETE DEVE SER COBRADO COM BASE NO PESO OU NO VOLUME DA CARGA (CUBAGEM)
+            $cubage = $shippingCalculator->calcCubage($width, $length, $height);
+            //FAZ CHAMADA A UM METODO QUE FAZ A VERIFICAÇÃO SE O FRETE DEVE SER COBRADO COM BASE NO PESO OU NO VOLUME DA CARGA(CUBAGEM)
+            $newWeightobtained = $shippingCalculator->verifyIfWeightCubage($cubage, $weight);
 
-        //FAZ CHAMADA A UM MÉTODO LOCAL QUE FAZ OBTEM DA BASE DE DADOS, OS VALORES E TAXAS MINIMAS PARA UM FRETE, COM BASE NA DISTANCIA E PESO DA CARGA
-        $value_ShippingWeight = $this->shippingWeight($distance, $newWeightobtained);
+            //FAZ CHAMADA A UM MÉTODO LOCAL QUE FAZ OBTEM DA BASE DE DADOS, OS VALORES E TAXAS MINIMAS PARA UM FRETE, COM BASE NA DISTANCIA E PESO DA CARGA
+            $value_ShippingWeight = $this->shippingWeight($distance, $newWeightobtained);
 
-        //FAZ CHAMADA A UM MÉTODO QUE OBTEM O TAXA DE DESPACHO 
-        $value_DispatchRate = $shippingCalculator->getDispatchRate();
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO FRETE VALOR, DEVE SER INFORMADO O VALOR DA NOTA FISCAL E O PERCENTUAL DA TAXA DEVE VIR DA TABLE SUGERIDA PELO NTC
-        $value_shippingValue = $shippingCalculator->calcShippingValue($valueInvoice, $value_ShippingWeight['percentage_shipping_value']);
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DA TAXA DE GERENCIAMENTO DE RISCO, O VALOR PERCENTUAL DEVE VIR DA TABLE SUGERIDA PELO NTC
-        $value_RateGRIS = $shippingCalculator->calcRateGRIS($valueInvoice);
+            //FAZ CHAMADA A UM MÉTODO QUE OBTEM O TAXA DE DESPACHO 
+            $value_DispatchRate = $shippingCalculator->getDispatchRate();
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO FRETE VALOR, DEVE SER INFORMADO O VALOR DA NOTA FISCAL E O PERCENTUAL DA TAXA DEVE VIR DA TABLE SUGERIDA PELO NTC
+            $value_shippingValue = $shippingCalculator->calcShippingValue($valueInvoice, $value_ShippingWeight['percentage_shipping_value']);
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DA TAXA DE GERENCIAMENTO DE RISCO, O VALOR PERCENTUAL DEVE VIR DA TABLE SUGERIDA PELO NTC
+            $value_RateGRIS = $shippingCalculator->calcRateGRIS($valueInvoice);
 
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DO FRETE BASE, ANTES DAS GENERALIDADES E SERVIÇOS ADICIONAIS
-        $PreFreteBase = $shippingCalculator->calcPreFreteBase($value_ShippingWeight['value_shipping_weight'], $value_DispatchRate, $value_shippingValue, $value_RateGRIS);
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DO FRETE BASE, ANTES DAS GENERALIDADES E SERVIÇOS ADICIONAIS
+            $PreFreteBase = $shippingCalculator->calcPreFreteBase($value_ShippingWeight['value_shipping_weight'], $value_DispatchRate, $value_shippingValue, $value_RateGRIS);
 
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DA TAXA DE RESTRIÇÃO AO TRÁFEGO
-        $value_TrafficRestriction = $shippingCalculator->calcGeneralandAdditionalServicesTrafficRestrictionRate($PreFreteBase);
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DA TAXA DE PEDÁGIO
-        $value_TollRate = $shippingCalculator->calcGeneralandAdditionalServicesTollRate($newWeightobtained);
-        //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR TAXA POR SERVIÇOS ADICIONAIS
-        $value_Scheduling = $shippingCalculator->calcGeneralandAdditionalServicesScheduling($PreFreteBase);
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DA TAXA DE RESTRIÇÃO AO TRÁFEGO
+            $value_TrafficRestriction = $shippingCalculator->calcGeneralandAdditionalServicesTrafficRestrictionRate($PreFreteBase);
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR DA TAXA DE PEDÁGIO
+            $value_TollRate = $shippingCalculator->calcGeneralandAdditionalServicesTollRate($newWeightobtained);
+            //FAZ CHAMADA A UM MÉTODO QUE FAZ O CÁLCULO DO VALOR TAXA POR SERVIÇOS ADICIONAIS
+            $value_Scheduling = $shippingCalculator->calcGeneralandAdditionalServicesScheduling($PreFreteBase);
 
-        //FAZ A SOMA DE TODOS OS VALORES
-        $sum = $shippingCalculator->getFinal([
-            $value_ShippingWeight['value_shipping_weight'],
-            $value_DispatchRate,
-            $value_shippingValue,
-            $value_RateGRIS,
-            $value_TrafficRestriction,
-            $value_TollRate,
-            $value_Scheduling
-        ]);
+            //FAZ A SOMA DE TODOS OS VALORES
+            $sum = $shippingCalculator->getFinal([
+                $value_ShippingWeight['value_shipping_weight'],
+                $value_DispatchRate,
+                $value_shippingValue,
+                $value_RateGRIS,
+                $value_TrafficRestriction,
+                $value_TollRate,
+                $value_Scheduling
+            ]);
+        } catch (\Exception $th) {
+            return [
+                'message' => $th->getMessage(),
+                'code' => 500
+            ];
+        }
+
         //RETORNA O RESULTADO PARA O CONTROLLER
-
         return [
-            'shipping_value' => $sum,
+            'shipping_value' => round($sum, 2),
             'deadline' => $value_ShippingWeight['deadline'] . ' working days',
         ];
     }
