@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TesteController;
+use App\Http\Controllers\ShippingController;
+use App\Http\Controllers\TrackingObjectsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +18,4 @@ use App\Http\Controllers\TesteController;
 
 Route::get('calcular', [TesteController::class, 'teste'])->name('teste.teste');
 Route::get('frete/calc', [ShippingController::class, 'calc'])->name('frete.calc');
+Route::get('objects/tracking', [TrackingObjectsController::class, 'index'])->name('objects.tracking');

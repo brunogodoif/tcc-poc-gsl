@@ -40,6 +40,6 @@ class CreateShippingWeight extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('public.shipping_weight');
+        Schema::dropIfExists('freight.shipping_weight');
     }
 }

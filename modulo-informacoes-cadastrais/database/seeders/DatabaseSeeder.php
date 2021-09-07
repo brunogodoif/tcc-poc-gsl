@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call(ShippingWeight::class);
+        $this->call(ObjectsAndTrackings::class);
     }
 }
