@@ -18,4 +18,5 @@ use App\Http\Controllers\TrackingObjectsController;
 
 Route::get('calcular', [TesteController::class, 'teste'])->name('teste.teste');
 Route::get('frete/calc', [ShippingController::class, 'calc'])->name('frete.calc');
-Route::get('objects/tracking', [TrackingObjectsController::class, 'index'])->name('objects.tracking');
+Route::get('objects/tracking', [TrackingObjectsController::class, 'getAll'])->name('objects.tracking.getAll');
+Route::get('objects/tracking/{tracking_code}', [TrackingObjectsController::class, 'getOne'])->name('objects.tracking.getOne');

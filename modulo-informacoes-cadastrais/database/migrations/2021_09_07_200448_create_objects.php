@@ -16,8 +16,10 @@ class CreateObjects extends Migration
         Schema::create('objects.objects', function (Blueprint $table) {
             $table->integer('id', true, false)->signed();
             $table->string('tracking_code', 60)->unique();
-            $table->string('localization_source');
-            $table->string('localization_destiny');
+            $table->string('localization_source_address');
+            $table->string('localization_source_lat_long');
+            $table->string('localization_destiny_address');
+            $table->string('localization_destiny_lat_long');
             $table->decimal('total_invoice', 16, 2);
             $table->integer('weight');
             $table->decimal('shipping_cost', 16, 2);
@@ -26,7 +28,6 @@ class CreateObjects extends Migration
             $table->date('expected_delivery_date');
             $table->string('type_transport');
             $table->string('status');
-
         });
     }
 

@@ -16,7 +16,8 @@ class CreateObjectsTracking extends Migration
         Schema::create('objects.objects_tracking', function (Blueprint $table) {
             $table->integer('id', true, false)->signed();
             $table->string('tracking_code', 60);
-            $table->string('localization_current');
+            $table->string('localization_current_address');
+            $table->string('localization_current_lat_long');
             $table->date('date');
             $table->time('time');
             $table->text('description');

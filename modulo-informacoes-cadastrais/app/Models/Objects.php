@@ -12,4 +12,9 @@ class Objects extends Model
     protected $table = "objects.objects";
 
     protected $primaryKey = 'id';
+
+    public function tracking()
+    {
+        return $this->hasMany(ObjectsTracking::class, 'tracking_code', 'tracking_code')->orderBy('id', 'ASC');
+    }
 }

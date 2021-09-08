@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use App\Services\GeoCodingApiService;
 
 class ObjectsAndTrackings extends Seeder
 {
@@ -15,6 +16,7 @@ class ObjectsAndTrackings extends Seeder
      */
     public function run()
     {
+        $GeoCodingApiService =  new GeoCodingApiService;
         DB::table('objects.objects')->delete();
         DB::table('objects.objects_tracking')->delete();
         $tracking_code = '';
@@ -23,8 +25,10 @@ class ObjectsAndTrackings extends Seeder
             'obj' =>
             [
                 'tracking_code' => $tracking_code,
-                'localization_source' => '-23.5306392,-46.457528',
-                'localization_destiny' => '-23.5385817,-46.4831554',
+                'localization_source_address' => 'Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP',
+                'localization_source_lat_long' => $GeoCodingApiService->getLatLong("Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP"),
+                'localization_destiny_address' => 'Av. José Pinheiro Borges - Itaquera, São Paulo - SP',
+                'localization_destiny_lat_long' => $GeoCodingApiService->getLatLong("Av. José Pinheiro Borges - Itaquera, São Paulo - SP"),
                 'total_invoice' => '500',
                 'weight' => '25',
                 'shipping_cost' => '180',
@@ -37,14 +41,16 @@ class ObjectsAndTrackings extends Seeder
             'tracking' => [
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5306392,-46.457528',
+                    'localization_current_address' => 'Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP"),
                     'date' => Carbon::now()->format('Y-m-d'),
                     'time' => Carbon::now()->format('H:i:s'),
                     'description' => 'OBJETO RETIRADO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5385817,-46.4831554',
+                    'localization_current_address' => 'Av. Águia de Haia, 1704 - Parque Paineiras, São Paulo - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Av. Águia de Haia, 1704 - Parque Paineiras, São Paulo - SP"),
                     'date' => Carbon::now()->addDay()->format('Y-m-d'),
                     'time' => Carbon::now()->addDay()->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
@@ -60,8 +66,10 @@ class ObjectsAndTrackings extends Seeder
             'obj' =>
             [
                 'tracking_code' => $tracking_code,
-                'localization_source' => '-23.5306392,-46.457528',
-                'localization_destiny' => '-23.5269873,-46.4569632',
+                'localization_source_address' => 'Avenida Guilherme Giorgi, 840, São Paulo - SP',
+                'localization_source_lat_long' => $GeoCodingApiService->getLatLong("Avenida Guilherme Giorgi, 840, São Paulo - SP"),
+                'localization_destiny_address' => 'Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul), São Paulo - SP',
+                'localization_destiny_lat_long' => $GeoCodingApiService->getLatLong("Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul), São Paulo - SP"),
                 'total_invoice' => '5000',
                 'weight' => '250',
                 'shipping_cost' => '500',
@@ -75,21 +83,24 @@ class ObjectsAndTrackings extends Seeder
             [
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5306392,-46.457528',
+                    'localization_current_address' => 'Avenida Guilherme Giorgi, 840, São Paulo - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Avenida Guilherme Giorgi, 840, São Paulo - SP"),
                     'date' => Carbon::now()->format('Y-m-d'),
                     'time' => Carbon::now()->format('H:i:s'),
                     'description' => 'OBJETO RETIRADO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5290966,-46.4551588',
+                    'localization_current_address' => 'Alameda Vicente Pinzon, 54 - Vila Olímpia, São Paulo - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Alameda Vicente Pinzon, 54 - Vila Olímpia, São Paulo - SP"),
                     'date' => Carbon::now()->addDay()->format('Y-m-d'),
                     'time' => Carbon::now()->addDay()->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5269873,-46.4569632',
+                    'localization_current_address' => 'Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul), São Paulo - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong('Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul), São Paulo - SP'),
                     'date' => Carbon::now()->addDays(3)->format('Y-m-d'),
                     'time' => Carbon::now()->addDays(3)->format('H:i:s'),
                     'description' => 'ENTREGUE',
@@ -106,8 +117,10 @@ class ObjectsAndTrackings extends Seeder
             'obj' =>
             [
                 'tracking_code' => $tracking_code,
-                'localization_source' => '-24.2955832,-46.9760762',
-                'localization_destiny' => '-23.553682,-46.5475121',
+                'localization_source_address' => 'Rua Doná Júlia, 822 - Bal Tres Marias, Peruíbe - SP',
+                'localization_source_lat_long' => $GeoCodingApiService->getLatLong("Rua Doná Júlia, 822 - Bal Tres Marias, Peruíbe - SP"),
+                'localization_destiny_address' => 'Avenida Guilherme Giorgi, 840 - Vila Carrao, São Paulo - SP',
+                'localization_destiny_lat_long' => $GeoCodingApiService->getLatLong("Avenida Guilherme Giorgi, 840 - Vila Carrao, São Paulo - SP"),
                 'total_invoice' => '1200',
                 'weight' => '500',
                 'shipping_cost' => '750',
@@ -120,35 +133,40 @@ class ObjectsAndTrackings extends Seeder
             'tracking' => [
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-24.2955832,-46.9760762',
+                    'localization_current_address' => 'Rua Doná Júlia, 822 - Bal Tres Marias, Peruíbe - SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Rua Doná Júlia, 822 - Bal Tres Marias, Peruíbe - SP"),
                     'date' => Carbon::now()->format('Y-m-d'),
                     'time' => Carbon::now()->format('H:i:s'),
                     'description' => 'OBJETO RETIRADO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-24.2140393,-47.0930857',
+                    'localization_current_address' => 'Itanhaém, SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Itanhaém, SP"),
                     'date' => Carbon::now()->addDay()->format('Y-m-d'),
                     'time' => Carbon::now()->addDay()->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-24.0891933,-46.7436996',
+                    'localization_current_address' => 'Mongaguá, SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Mongaguá, SP"),
                     'date' => Carbon::now()->addDays(2)->format('Y-m-d'),
                     'time' => Carbon::now()->addDays(2)->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-24.0365689,-46.6421159',
+                    'localization_current_address' => 'Santos, SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("Santos, SP"),
                     'date' => Carbon::now()->addDays(3)->format('Y-m-d'),
                     'time' => Carbon::now()->addDays(3)->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
                 ],
                 [
                     'tracking_code' => $tracking_code,
-                    'localization_current' => '-23.5315855,-46.5767664',
+                    'localization_current_address' => 'São Bernardo do Campo, SP',
+                    'localization_current_lat_long' => $GeoCodingApiService->getLatLong("São Bernardo do Campo, SP"),
                     'date' => Carbon::now()->addDays(4)->format('Y-m-d'),
                     'time' => Carbon::now()->addDays(4)->format('H:i:s'),
                     'description' => 'EM TRÂNSITO',
