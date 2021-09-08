@@ -56,6 +56,7 @@ class AuthService
 
     public function validateJWT($token)
     {
+        $token = str_ireplace('Bearer ', '', $token);
         try {
             $token = JWTAuth::setToken(($token) ?? null);
             //JWTAuth::getJWTProvider()->setSecret($this->secret_cortex);

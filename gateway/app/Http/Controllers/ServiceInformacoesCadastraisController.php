@@ -9,12 +9,29 @@ class ServiceInformacoesCadastraisController extends Controller
 {
     public function calculateshipping(Request $request)
     {
-        $response = Http::get('nginx-service-informacoes-cadastrais/api/frete/calc', $request->all());
+        $url = 'nginx-service-informacoes-cadastrais/api/frete/calc';
+        $response = Http::get($url, $request->all());
 
         return response()->json(
             json_decode($response->getBody()->getContents()),
             $response->getStatusCode()
         );
-        
+    }
+
+    public function objectstracking(Request $request, $tracking_code = null)
+    {
+
+        $url = 'nginx-service-informacoes-cadastrais/api/objects/tracking';
+
+        if ($tracking_code != null or $tracking_code != '') {
+            $url .= '/' . $tracking_code;
+        }
+
+        $response = Http::get($url, $request->all());
+
+        return response()->json(
+            json_decode($response->getBody()->getContents()),
+            $response->getStatusCode()
+        );
     }
 }

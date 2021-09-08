@@ -19,4 +19,5 @@ Route::post('auth', [AuthController::class, 'authLogin'])->name('auth.login');
 Route::get('auth', [AuthController::class, 'authValidate'])->name('auth.verify');
 
 Route::get('shippingcompany/calculateshipping', [ServiceInformacoesCadastraisController::class, 'calculateshipping'])->name('informacoes-cadastrais.calculateshipping');
-
+Route::get('shippingcompany/objectstracking', [ServiceInformacoesCadastraisController::class, 'objectstracking'])->name('informacoes-cadastrais.objectstracking');
+Route::get('shippingcompany/objectstracking/{tracking_code?}', [ServiceInformacoesCadastraisController::class, 'objectstracking'])->name('informacoes-cadastrais.objectstracking');
