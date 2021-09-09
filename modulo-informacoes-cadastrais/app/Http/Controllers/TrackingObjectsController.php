@@ -10,8 +10,6 @@ class TrackingObjectsController extends Controller
 {
     public function getAll(Request $request)
     {
-        $GeoCodingApiService = new GeoCodingApiService;
-
         $TrackingObjectsService = new TrackingObjectsService;
 
         $result = $TrackingObjectsService->getAll(
@@ -32,7 +30,7 @@ class TrackingObjectsController extends Controller
         $tracking_code = trim($tracking_code);
 
         if ($tracking_code == null or $tracking_code == "") {
-            return response()->json(['message' => "Invalid parameters"], 500);
+            return response()->json(['message' => "Invalid parameters"], 400);
         }
 
         $result = $TrackingObjectsService->getOne(

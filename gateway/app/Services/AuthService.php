@@ -63,11 +63,11 @@ class AuthService
             $apy = JWTAuth::getPayload($token)->toArray();
             return $apy;
         } catch (\Tymon\JWTAuth\Exceptions\TokenExpiredException $e) {
-            return response()->json(['message' => 'Token Expired'], 401);
+            return response()->json(['message' => 'Token Expired'], 404);
         } catch (\Tymon\JWTAuth\Exceptions\TokenInvalidException $e) {
-            return response()->json(['message' => 'Token Invalid'], 401);
+            return response()->json(['message' => 'Token Invalid'], 404);
         } catch (\Tymon\JWTAuth\Exceptions\JWTException $e) {
-            return response()->json(['message' => 'Token Absent'], 401);
+            return response()->json(['message' => 'Token Absent'], 404);
         }
     }
 }

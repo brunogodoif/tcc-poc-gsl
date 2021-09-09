@@ -14,7 +14,7 @@ class DistanceMatrixApiService
     {
     }
 
-    public function calculateDistanceBetweenZipCodes($zipCodeSource, $zipCodeDestiny)
+    public function calculateDistanceBetweenTwoPoints($zipCodeSource, $zipCodeDestiny)
     {
 
         //MÉTODO QUE FAZ UMA REQUISIÇÃO A API GOOGLE MAPS DISTANCE MATRIX E RETORNA OS DADOS DE DISTANCIA ENTRE DOIS 2 CEPS

@@ -14,7 +14,7 @@ class ShippingController extends Controller
         $validateInputs = $this->validateInputsRequest($request);
 
         if ($validateInputs == false) {
-            return response()->json(['message' => "Invalid parameters"], 500);
+            return response()->json(['message' => "Invalid parameters"], 400);
         }
 
         $resultCalcFrete = $ShippingService->caclFrete(
@@ -23,8 +23,8 @@ class ShippingController extends Controller
             $request->get('width'),
             $request->get('length'),
             $request->get('height'),
-            $request->get('zipCodeSource'),
-            $request->get('zipCodeDestiny'),
+            $request->get('addressSource'),
+            $request->get('addressDestiny'),
         );
 
         if (isset($resultCalcFrete['message'])) {
@@ -38,9 +38,9 @@ class ShippingController extends Controller
     public function validateInputsRequest($request)
     {
         if (
-            !$request->has(['weight', 'invoice', 'width', 'length', 'height', 'zipCodeSource', 'zipCodeDestiny'])
+            !$request->has(['weight', 'invoice', 'width', 'length', 'height', 'addressSource', 'addressDestiny'])
             or
-            !$request->filled(['weight', 'invoice', 'width', 'length', 'height', 'zipCodeSource', 'zipCodeDestiny'])
+            !$request->filled(['weight', 'invoice', 'width', 'length', 'height', 'addressSource', 'addressDestiny'])
         ) {
             return false;
         }

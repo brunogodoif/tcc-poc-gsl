@@ -1,0 +1,546 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Your super  ApplicationAPI",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/auth": {
+            "get": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Valida a autenticação",
+                "description": "Faz a validação do token JWT informado, validando se o token é válido e se o usuário esta autorizado a acessar os serviços da plataforma",
+                "operationId": "authLogin-2",
+                "requestBody": {
+                    "description": "Token JWT recebido da requisição POST /auth",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "token",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "token": {
+                                        "type": "string",
+                                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2N..."
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok, Token validado e usuário autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Token informado não esta autorizado a utilizar o serviço",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Not authorized"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Token informado esta inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Token invalid"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "auth"
+                ],
+                "summary": "Faz a autenticação no sistema",
+                "description": "Autenticação na plataforma com base no e-mail e senha de um usuário, token JWT será retornado em caso de usuário autenticado. Este token deverá ser enviado em todas as requisições dos demais serviços.",
+                "operationId": "authLogin-1",
+                "requestBody": {
+                    "description": "E-mail e senha de usuário",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "user1@mail.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "PassWord12345"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Ok, usuário autenticado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Ok"
+                                        },
+                                        "token_access": {
+                                            "type": "string",
+                                            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2NhbGhvc..."
+                                        },
+                                        "token_type": {
+                                            "type": "string",
+                                            "example": "jwt"
+                                        },
+                                        "token_expires_in": {
+                                            "type": "int",
+                                            "example": "3600"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Usuário não autorizado, e-mail ou senha inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login Fail, pls check password"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/shippingcompany/objectstracking": {
+            "get": {
+                "tags": [
+                    "UC01"
+                ],
+                "summary": "UC01 - Rastreio de objetos/mercadorias da origem ao destino",
+                "description": "Retorna informações de objetos/mercadorias em transporte",
+                "operationId": "UC01-1",
+                "requestBody": {
+                    "description": "Os valores abaixo sendo informados serão utilizados para busca dos dados",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "expected_delivery_date": {
+                                        "type": "string",
+                                        "example": "2021-09-11 - 2021-10-11"
+                                    },
+                                    "type_transport": {
+                                        "type": "string",
+                                        "example": "Van | Truck"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "a | b | c"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorno dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "User notification settings",
+                                            "type": "object",
+                                            "example": [
+                                                {
+                                                    "id": 10,
+                                                    "tracking_code": "GLS-BR-202109092040",
+                                                    "localization_source_address": "Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP",
+                                                    "localization_source_lat_long": "-23.5306441,-46.4553393",
+                                                    "localization_destiny_address": "Av. José Pinheiro Borges - Itaquera, São Paulo - SP",
+                                                    "localization_destiny_lat_long": "-23.5346409,-46.4535243",
+                                                    "total_invoice": "500.00",
+                                                    "weight": 25,
+                                                    "shipping_cost": "180.00",
+                                                    "dispatch_date": "2021-09-09",
+                                                    "deadline_in_days": 2,
+                                                    "expected_delivery_date": "2021-09-11",
+                                                    "type_transport": "Van",
+                                                    "status": "EM TRÂNSITO"
+                                                },
+                                                {
+                                                    "id": 11,
+                                                    "tracking_code": "GLS-BR-202109092026",
+                                                    "localization_source_address": "Avenida Guilherme Giorgi, 840, São Paulo - SP",
+                                                    "localization_source_lat_long": "-23.5537135,-46.5453773",
+                                                    "localization_destiny_address": "Rua Enxovia, 472 - Vila Sao Francisco (Zona Sul), São Paulo - SP",
+                                                    "localization_destiny_lat_long": "-23.6273005,-46.7006828",
+                                                    "total_invoice": "5000.00",
+                                                    "weight": 250,
+                                                    "shipping_cost": "500.00",
+                                                    "dispatch_date": "2021-09-09",
+                                                    "deadline_in_days": 5,
+                                                    "expected_delivery_date": "2021-09-14",
+                                                    "type_transport": "Van",
+                                                    "status": "ENTREGUE"
+                                                }
+                                            ]
+                                        },
+                                        "total": {
+                                            "type": "int",
+                                            "example": "3"
+                                        },
+                                        "query": {
+                                            "type": "object",
+                                            "example": "valores informados na requisição"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetros informados são inválidos ou estão em formato inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Falha de servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "-> Mensagem com erro de processamento do servidor <-"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/shippingcompany/objectstracking/{tracking_code}": {
+            "get": {
+                "tags": [
+                    "UC01"
+                ],
+                "summary": "UC01 - Rastreio de objetos/mercadorias da origem ao destino com datalhemento do rastreio",
+                "description": "Retorna informações de um objeto/mercadoria juntamente com dados de rastreio",
+                "operationId": "UC01-2",
+                "requestBody": {
+                    "description": "O código de rastreio é obrigatório para o funcionamento desta funcionalidade",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "tracking_code": {
+                                        "type": "string",
+                                        "example": "GLS-BR-202109092040"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorno dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "description": "User notification settings",
+                                            "type": "object",
+                                            "example": [
+                                                {
+                                                    "id": 10,
+                                                    "tracking_code": "GLS-BR-202109092040",
+                                                    "localization_source_address": "Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP",
+                                                    "localization_source_lat_long": "-23.5306441,-46.4553393",
+                                                    "localization_destiny_address": "Av. José Pinheiro Borges - Itaquera, São Paulo - SP",
+                                                    "localization_destiny_lat_long": "-23.5346409,-46.4535243",
+                                                    "total_invoice": "500.00",
+                                                    "weight": 25,
+                                                    "shipping_cost": "180.00",
+                                                    "dispatch_date": "2021-09-09",
+                                                    "deadline_in_days": 2,
+                                                    "expected_delivery_date": "2021-09-11",
+                                                    "type_transport": "Van",
+                                                    "status": "EM TRÂNSITO",
+                                                    "tracking": [
+                                                        [
+                                                            {
+                                                                "id": 31,
+                                                                "tracking_code": "GLS-BR-202109092040",
+                                                                "localization_current_address": "Rua Carolina Fonseca, 315 - Vila Taquari, São Paulo - SP",
+                                                                "localization_current_lat_long": "-23.5306441,-46.4553393",
+                                                                "date": "2021-09-09",
+                                                                "time": "20:11:24",
+                                                                "description": "OBJETO RETIRADO"
+                                                            },
+                                                            {
+                                                                "id": 32,
+                                                                "tracking_code": "GLS-BR-202109092040",
+                                                                "localization_current_address": "Av. Águia de Haia, 1704 - Parque Paineiras, São Paulo - SP",
+                                                                "localization_current_lat_long": "-23.5309506,-46.4737223",
+                                                                "date": "2021-09-10",
+                                                                "time": "20:11:24",
+                                                                "description": "EM TRÂNSITO"
+                                                            }
+                                                        ]
+                                                    ]
+                                                }
+                                            ]
+                                        },
+                                        "total": {
+                                            "type": "int",
+                                            "example": "3"
+                                        },
+                                        "query": {
+                                            "type": "object",
+                                            "example": "valores informados na requisição"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetros informados são inválidos ou estão em formato inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Falha de servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "-> Mensagem com erro de processamento do servidor <-"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
+        "/shippingcompany/calculateshipping": {
+            "get": {
+                "tags": [
+                    "UC02"
+                ],
+                "summary": "UC02 – Cálculo de frete",
+                "description": "Retorna o cálculo de frete e tempo estimado de entrega de um objeto/mercadorias com base em suas medidas e peso e distancia entre ponto de origem e destino",
+                "operationId": "UC02",
+                "requestBody": {
+                    "description": "Abaixo os valores necessários para o calculo do frete",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "weight": {
+                                        "type": "string",
+                                        "example": "98.00"
+                                    },
+                                    "invoice": {
+                                        "type": "string",
+                                        "example": "725"
+                                    },
+                                    "width": {
+                                        "type": "string",
+                                        "example": "0.90"
+                                    },
+                                    "length": {
+                                        "type": "string",
+                                        "example": "1.50"
+                                    },
+                                    "height": {
+                                        "type": "string",
+                                        "example": "0.90"
+                                    },
+                                    "addressSource": {
+                                        "type": "string",
+                                        "example": "Av. Contorno, Nº 165 - Setor Norte Ferroviário, Goiânia - GO"
+                                    },
+                                    "addressDestiny": {
+                                        "type": "string",
+                                        "example": "R. Carlos Leal Evans, 252 - Jardim Santa Francisca, Guarulhos - SP"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorno do frete calculado e tempo estimado de entrega",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "data": {
+                                            "type": "double",
+                                            "example": "1.500,00"
+                                        },
+                                        "deadline": {
+                                            "type": "string",
+                                            "example": "2 working days"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetros informados são inválidos ou estão em formato inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Falha de servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "-> Mensagem com erro de processamento do servidor <-"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        }
+    },
+    "security": [
+        []
+    ]
+}

@@ -15,11 +15,11 @@ class ShippingService
     {
     }
 
-    public function caclFrete(Float $weight, Float $valueInvoice, Float $width, Float $length, Float $height, String $zipCodeSource, String $zipCodeDestiny)
+    public function caclFrete(Float $weight, Float $valueInvoice, Float $width, Float $length, Float $height, String $addressCodeSource, String $addressCodeDestiny)
     {
         //OBTEM A DISTANCE EM KM ENTRE DOIS CEPS
         $DistanceMatrixApiService = new DistanceMatrixApiService;
-        $distance = $DistanceMatrixApiService->calculateDistanceBetweenZipCodes($zipCodeSource, $zipCodeDestiny);
+        $distance = $DistanceMatrixApiService->calculateDistanceBetweenTwoPoints($addressCodeSource, $addressCodeDestiny);
 
         if ($distance == false or !is_numeric($distance)) {
             return [
