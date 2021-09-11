@@ -17,7 +17,7 @@ class ShippingController extends Controller
             return response()->json(['message' => "Invalid parameters"], 400);
         }
 
-        $resultCalcFrete = $ShippingService->caclFrete(
+        $resultCaclFreight = $ShippingService->caclFreight(
             $request->get('weight'),
             $request->get('invoice'),
             $request->get('width'),
@@ -27,15 +27,15 @@ class ShippingController extends Controller
             $request->get('addressDestiny'),
         );
 
-        if (isset($resultCalcFrete['message'])) {
-            return response()->json(['message' => $resultCalcFrete['message']],  $resultCalcFrete['code']);
+        if (isset($resultCaclFreight['message'])) {
+            return response()->json(['message' => $resultCaclFreight['message']],  $resultCaclFreight['code']);
         }
 
-        return response()->json($resultCalcFrete,  200);
+        return response()->json($resultCaclFreight,  200);
     }
 
 
-    public function validateInputsRequest($request)
+    private function validateInputsRequest(Request $request)
     {
         if (
             !$request->has(['weight', 'invoice', 'width', 'length', 'height', 'addressSource', 'addressDestiny'])

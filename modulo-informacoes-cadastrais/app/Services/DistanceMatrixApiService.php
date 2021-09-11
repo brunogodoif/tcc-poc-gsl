@@ -14,14 +14,14 @@ class DistanceMatrixApiService
     {
     }
 
-    public function calculateDistanceBetweenTwoPoints($zipCodeSource, $zipCodeDestiny)
+    public function calculateDistanceBetweenTwoPoints(String $Source, String $Destiny)
     {
 
         //MÉTODO QUE FAZ UMA REQUISIÇÃO A API GOOGLE MAPS DISTANCE MATRIX E RETORNA OS DADOS DE DISTANCIA ENTRE DOIS 2 CEPS
         try {
             $response = Http::get('https://maps.googleapis.com/maps/api/distancematrix/json', [
-                'origins' => $zipCodeSource,
-                'destinations' => $zipCodeDestiny,
+                'origins' => $Source,
+                'destinations' => $Destiny,
                 'key' => $this->key
             ]);
 

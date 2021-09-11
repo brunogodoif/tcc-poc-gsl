@@ -5,12 +5,12 @@ namespace App\Services\calculoFrete;
 class ShippingCalculator
 {
 
-    private $valueCubage = 300.00;
-    private $DispatchRate = 40.51;
-    private $percentualGRIS = 0.30;
-    private $ratePercentageTrafficRestriction = 15;
-    private $tollRate = 5.36;
-    private $ratePercentageScheduling = 20;
+    private Float $valueCubage = 300.00;
+    private Float $DispatchRate = 40.51;
+    private Float $percentualGRIS = 0.30;
+    private int $ratePercentageTrafficRestriction = 15;
+    private Float $tollRate = 5.36;
+    private int $ratePercentageScheduling = 20;
 
     public function calcCubage(Float $width, Float $length, Float $height)
     {
@@ -20,7 +20,6 @@ class ShippingCalculator
 
     public function verifyIfWeightCubage($cubage, $weight)
     {
-        /*dd($cubage, $weight); 5424.3  1540.0
         /*  
             > Se o resultado, em kg, for menor que o peso efetivo da carga, então desconsidere este cálculo e use o peso original para formar o seu preço de frete;
 
@@ -89,9 +88,9 @@ class ShippingCalculator
         return round(($PreshipmentBaseValue * $this->ratePercentageScheduling) / 100, 2);
     }
 
-    public function getFinal(array $valores)
+    public function sumValues(array $values)
     {
         //FAZ A SOMATORIA DE UM ARRAY DE VALORES
-        return array_sum($valores);
+        return array_sum($values);
     }
 }

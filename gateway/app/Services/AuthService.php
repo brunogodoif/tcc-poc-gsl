@@ -11,7 +11,7 @@ use Tymon\JWTAuth\Facades\JWTFactory;
 class AuthService
 {
 
-    public function authenticate($credentials)
+    public function authenticate(Array $credentials)
     {
 
         $user  = Users::select('id', 'name', 'email', 'password', 'profile_id')->whereEmail($credentials['email'])->whereStatus(true)->first();
@@ -26,6 +26,7 @@ class AuthService
         unset($user->password);
 
         $token = $this->generateTokenJwt($user);
+
         return response()->json([
             'message' => 'Ok',
             'token_access' => $token,
@@ -34,7 +35,7 @@ class AuthService
         ], 200);
     }
 
-    public function generateTokenJwt($userData)
+    private function generateTokenJwt(Users $userData)
     {
         $userData->exp = Carbon::now()->addSeconds(3600)->timestamp;
         JWTAuth::getJWTProvider()->setSecret(env('JWT_SECRET'));

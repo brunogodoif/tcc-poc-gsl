@@ -57,7 +57,7 @@ class TrackingObjectsService
 
 
 
-    public function addFilters(array $filters, Objects $Objects)
+    private function addFilters(array $filters, Objects $Objects)
     {
         if (count($filters) > 0) {
             if (isset($filters['tracking_code']) && $filters['tracking_code'] != '') {

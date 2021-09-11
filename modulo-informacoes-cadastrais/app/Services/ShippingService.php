@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Models\ShippingWeight;
+use App\Services\GeoCodingApiService;
 use App\Services\DistanceMatrixApiService;
 use App\Services\calculoFrete\ShippingCalculator;
 
@@ -15,11 +16,24 @@ class ShippingService
     {
     }
 
-    public function caclFrete(Float $weight, Float $valueInvoice, Float $width, Float $length, Float $height, String $addressCodeSource, String $addressCodeDestiny)
+    public function caclFreight(Float $weight, Float $valueInvoice, Float $width, Float $length, Float $height, String $addressSource, String $addressDestiny)
     {
-        //OBTEM A DISTANCE EM KM ENTRE DOIS CEPS
+        $GeoCodingApiService = new GeoCodingApiService;
+        //OBTEM A LATITUDE E LONGITUDE DE UM ENDEREÇO DE ORIGEM
+        $latLongSource = $GeoCodingApiService->getLatLong($addressSource);
+        //OBTEM A LATITUDE E LONGITUDE DE UM ENDEREÇO DE DESTINO
+        $latLongDestiny = $GeoCodingApiService->getLatLong($addressDestiny);
+
+        if ($latLongSource == false or $latLongDestiny == false) {
+            return [
+                'message' => 'It was not possible to obtain the distance between the addresses entered',
+                'code' => 500
+            ];
+        }
+
         $DistanceMatrixApiService = new DistanceMatrixApiService;
-        $distance = $DistanceMatrixApiService->calculateDistanceBetweenTwoPoints($addressCodeSource, $addressCodeDestiny);
+        //OBTEM A DISTANCE EM KM ENTRE DOIS PONTOS
+        $distance = $DistanceMatrixApiService->calculateDistanceBetweenTwoPoints($latLongSource, $latLongDestiny);
 
         if ($distance == false or !is_numeric($distance)) {
             return [
@@ -58,7 +72,7 @@ class ShippingService
             $value_Scheduling = $shippingCalculator->calcGeneralandAdditionalServicesScheduling($PreFreteBase);
 
             //FAZ A SOMA DE TODOS OS VALORES
-            $sum = $shippingCalculator->getFinal([
+            $sum = $shippingCalculator->sumValues([
                 $value_ShippingWeight['value_shipping_weight'],
                 $value_DispatchRate,
                 $value_shippingValue,
@@ -104,7 +118,7 @@ class ShippingService
         ];
     }
 
-    public function getShippingWeightFiled(Float $newWeightobtained)
+    private function getShippingWeightFiled(Float $newWeightobtained)
     {
         $field = null;
         switch (true) {

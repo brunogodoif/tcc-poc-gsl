@@ -44,17 +44,4 @@ class TrackingObjectsController extends Controller
         return response()->json($result,  200);
     }
 
-
-    public function validateInputsRequest($request)
-    {
-        if (
-            !$request->has(['tracking_code'])
-            or
-            !$request->filled(['tracking_code'])
-        ) {
-            return false;
-        }
-
-        return true;
-    }
 }
