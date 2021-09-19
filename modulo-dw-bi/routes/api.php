@@ -1,7 +1,7 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ReportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,16 +14,4 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-
-Route::get('/', function (Request $request) {
-    return "GET modulo dw-bi  -> " . ($request->get('name', 'ND')) . ' - ' . ($request->get('role', 'ND')) . '<-';
-});
-
-
-Route::post('/', function (Request $request) {
-    return "POST modulo dw-bi  -> " . ($request->get('name', 'ND')) . ' - ' . ($request->get('role', 'ND')) . '<-';
-});
+Route::get('report', [ReportController::class, 'getDataReport'])->name('report.getDataReport');

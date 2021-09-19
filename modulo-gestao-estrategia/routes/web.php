@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-   dd("modulo de serviços ao cliente");
+Route::get('/mail/report', function () {
+   return view('mail.report.report');
 });
