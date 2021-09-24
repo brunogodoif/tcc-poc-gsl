@@ -2,8 +2,8 @@ version: "3"
 services:
   service-gateway:
     build:
-      context: ../gateway
-      dockerfile: ../gateway/docker-compose/Dockerfile.backendphp
+      context: ./gateway
+      dockerfile: ./docker-compose/Dockerfile.backendphp
     image: service-gateway
     restart: unless-stopped
     working_dir: /var/www/
@@ -14,8 +14,6 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    volumes:
-      - ../gateway:/var/www
     links:
       - postgresql-db-auth
       - nginx-service-informacoes-cadastrais
@@ -30,8 +28,6 @@ services:
   service-gateway-migrations:
     image: service-gateway
     working_dir: /var/www/
-    volumes:
-      - ../gateway:/var/www
     links:
       - postgresql-db-auth
     depends_on:
@@ -43,22 +39,20 @@ services:
     build:
       args:
         server_conf: ./docker-compose/nginx/local.conf
-      context: ../gateway
-      dockerfile: ../gateway/docker-compose/Dockerfile.nginx
+      context: ./gateway
+      dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gateway
     restart: unless-stopped
     ports:
       - "9091:80"
-    volumes:
-      - ../gateway:/var/www
     depends_on:
       - service-gateway
     networks:
       - gateway-network
   service-informacoes-cadastrais:
     build:
-      context: ../modulo-informacoes-cadastrais
-      dockerfile: ../modulo-informacoes-cadastrais/docker-compose/Dockerfile.backendphp
+      context: ./modulo-informacoes-cadastrais
+      dockerfile: ./docker-compose/Dockerfile.backendphp
     image: service-informacoes-cadastrais
     restart: unless-stopped
     working_dir: /var/www/
@@ -69,8 +63,6 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    volumes:
-      - ../modulo-informacoes-cadastrais:/var/www
     links:
       - postgresql-db-shippingcompany
     networks:
@@ -78,8 +70,6 @@ services:
   service-informacoes-cadastrais-migrations:
     image: service-informacoes-cadastrais
     working_dir: /var/www/
-    volumes:
-      - ../modulo-informacoes-cadastrais:/var/www
     links:
       - postgresql-db-shippingcompany
     depends_on:
@@ -91,22 +81,20 @@ services:
     build:
       args:
         server_conf: ./docker-compose/nginx/local.conf
-      context: ../modulo-informacoes-cadastrais
-      dockerfile: ../modulo-informacoes-cadastrais/docker-compose/Dockerfile.nginx
+      context: ./modulo-informacoes-cadastrais
+      dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-informacoes-cadastrais
     restart: unless-stopped
     #ports:
     #  - "9092:80"
-    volumes:
-      - ../modulo-informacoes-cadastrais:/var/www
     depends_on:
       - service-informacoes-cadastrais
     networks:
       - informacoes-cadastrais-network
   service-servicos-cliente:
     build:
-      context: ../modulo-servicos-cliente
-      dockerfile: ../modulo-servicos-cliente/docker-compose/Dockerfile.backendphp
+      context: ./modulo-servicos-cliente
+      dockerfile: ./docker-compose/Dockerfile.backendphp
     image: service-servicos-cliente
     restart: unless-stopped
     working_dir: /var/www/
@@ -117,30 +105,26 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    volumes:
-      - ../modulo-servicos-cliente:/var/www
     networks:
       - gateway-network
   nginx-service-servicos-cliente:
     build:
       args:
         server_conf: ./docker-compose/nginx/local.conf
-      context: ../modulo-servicos-cliente
-      dockerfile: ../modulo-servicos-cliente/docker-compose/Dockerfile.nginx
+      context: ./modulo-servicos-cliente
+      dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-servicos-cliente
     restart: unless-stopped
     ports:
       - "9093:80"
-    volumes:
-      - ../modulo-servicos-cliente:/var/www
     depends_on:
       - service-servicos-cliente
     networks:
       - gateway-network
   service-gestao-estrategia:
     build:
-      context: ../modulo-gestao-estrategia
-      dockerfile: ../modulo-gestao-estrategia/docker-compose/Dockerfile.backendphp
+      context: ./modulo-gestao-estrategia
+      dockerfile: ./docker-compose/Dockerfile.backendphp
     image: service-gestao-estrategia
     restart: unless-stopped
     working_dir: /var/www/
@@ -151,30 +135,26 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    volumes:
-      - ../modulo-gestao-estrategia:/var/www
     networks:
       - gateway-network
   nginx-service-gestao-estrategia:
     build:
       args:
         server_conf: ./docker-compose/nginx/local.conf
-      context: ../modulo-gestao-estrategia
-      dockerfile: ../modulo-gestao-estrategia/docker-compose/Dockerfile.nginx
+      context: ./modulo-gestao-estrategia
+      dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gestao-estrategia
     restart: unless-stopped
     ports:
       - "9094:80"
-    volumes:
-      - ../modulo-gestao-estrategia:/var/www
     depends_on:
       - service-gestao-estrategia
     networks:
       - gateway-network
   service-dw-bi:
     build:
-      context: ../modulo-dw-bi
-      dockerfile: ../modulo-dw-bi/docker-compose/Dockerfile.backendphp
+      context: ./modulo-dw-bi
+      dockerfile: ./docker-compose/Dockerfile.backendphp
     image: service-dw-bi
     restart: unless-stopped
     working_dir: /var/www/
@@ -185,22 +165,18 @@ services:
           memory: 128M
         reservations:
           memory: 64M
-    volumes:
-      - ../modulo-dw-bi:/var/www
     networks:
       - gateway-network
   nginx-service-dw-bi:
     build:
       args:
         server_conf: ./docker-compose/nginx/local.conf
-      context: ../modulo-dw-bi
-      dockerfile: ../modulo-dw-bi/docker-compose/Dockerfile.nginx
+      context: ./modulo-dw-bi
+      dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-dw-bi
     restart: unless-stopped
     ports:
       - "9095:80"
-    volumes:
-      - ../modulo-dw-bi:/var/www
     depends_on:
       - service-dw-bi
     networks:
@@ -209,12 +185,12 @@ services:
     image: postgres
     restart: always
     env_file:
-      - ../gateway/docker-compose/postgres/database.env
+      - ./gateway/docker-compose/postgres/database.env
     ports:
       - "15432:5432"
     volumes:
-      - ../gateway/datadbs/postgres:/var/lib/postgresql/data
-      - ../gateway/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
+      - ./gateway/datadbs/postgres:/var/lib/postgresql/data
+      - ./gateway/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
     networks:
       - gateway-network
     container_name: postgresql-db-auth
@@ -222,12 +198,12 @@ services:
     image: postgres
     restart: always
     env_file:
-      - ../modulo-informacoes-cadastrais/docker-compose/postgres/database.env
+      - ./modulo-informacoes-cadastrais/docker-compose/postgres/database.env
     ports:
       - "25432:5432"
     volumes:
-      - ../modulo-informacoes-cadastrais/datadbs/postgres:/var/lib/postgresql/data
-      - ../modulo-informacoes-cadastrais/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
+      - ./modulo-informacoes-cadastrais/datadbs/postgres:/var/lib/postgresql/data
+      - ./modulo-informacoes-cadastrais/docker-compose/postgres/dumps/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql
     networks:
       - informacoes-cadastrais-network
     container_name: postgresql-db-shippingcompany
