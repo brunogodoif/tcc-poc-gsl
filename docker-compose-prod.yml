@@ -7,8 +7,6 @@ services:
     image: service-gateway
     restart: unless-stopped
     working_dir: /var/www/
-    volumes:
-      - ./gateway:/var/www
     deploy:
       replicas: 1
       resources:
@@ -30,8 +28,6 @@ services:
   service-gateway-migrations:
     image: service-gateway
     working_dir: /var/www/
-    volumes:
-      - ./gateway:/var/www
     links:
       - postgresql-db-auth
     depends_on:
@@ -47,8 +43,6 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gateway
     restart: unless-stopped
-    volumes:
-      - ./gateway:/var/www
     ports:
       - "9091:80"
     depends_on:
@@ -62,8 +56,6 @@ services:
     image: service-informacoes-cadastrais
     restart: unless-stopped
     working_dir: /var/www/
-    volumes:
-      - ./modulo-informacoes-cadastrais:/var/www
     deploy:
       replicas: 1
       resources:
@@ -78,8 +70,6 @@ services:
   service-informacoes-cadastrais-migrations:
     image: service-informacoes-cadastrais
     working_dir: /var/www/
-    volumes:
-      - ./modulo-informacoes-cadastrais:/var/www
     links:
       - postgresql-db-shippingcompany
     depends_on:
@@ -95,10 +85,8 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-informacoes-cadastrais
     restart: unless-stopped
-    volumes:
-      - ./modulo-informacoes-cadastrais:/var/www
-    ports:
-      - "9092:80"
+    #ports:
+    #  - "9092:80"
     depends_on:
       - service-informacoes-cadastrais
     networks:
@@ -110,8 +98,6 @@ services:
     image: service-servicos-cliente
     restart: unless-stopped
     working_dir: /var/www/
-    volumes:
-      - ./modulo-servicos-cliente:/var/www
     deploy:
       replicas: 1
       resources:
@@ -129,8 +115,6 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-servicos-cliente
     restart: unless-stopped
-    volumes:
-      - ./modulo-servicos-cliente:/var/www
     ports:
       - "9093:80"
     depends_on:
@@ -144,8 +128,6 @@ services:
     image: service-gestao-estrategia
     restart: unless-stopped
     working_dir: /var/www/
-    volumes:
-      - ./modulo-gestao-estrategia:/var/www
     deploy:
       replicas: 1
       resources:
@@ -163,8 +145,6 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gestao-estrategia
     restart: unless-stopped
-    volumes:
-      - ./modulo-gestao-estrategia:/var/www
     ports:
       - "9094:80"
     depends_on:
@@ -178,8 +158,6 @@ services:
     image: service-dw-bi
     restart: unless-stopped
     working_dir: /var/www/
-    volumes:
-      - ./modulo-dw-bi:/var/www
     deploy:
       replicas: 1
       resources:
@@ -197,8 +175,6 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-dw-bi
     restart: unless-stopped
-    volumes:
-      - ./modulo-dw-bi:/var/www
     ports:
       - "9095:80"
     depends_on:

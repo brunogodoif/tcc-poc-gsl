@@ -69,7 +69,8 @@ class SendReportDelivery extends Command
         $mg = Mailgun::create($this->api_key); // For US servers
         $mg->messages()->send($this->domain, [
             'from'    => $this->from,
-            'to'      => 'brunofgodoi@outlook.com.br, diogooliveiracoelho@gmail.com',
+            //'to'      => 'brunofgodoi@outlook.com.br, diogooliveiracoelho@gmail.com',
+            'to'      => 'brunofgodoi@outlook.com.br',
             'subject' => 'Relatório de entregas - ' . Carbon::now()->format('d/m/Y'),
             'html'    => $html_message
         ]);

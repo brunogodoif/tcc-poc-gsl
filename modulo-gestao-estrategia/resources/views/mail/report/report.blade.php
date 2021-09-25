@@ -119,7 +119,7 @@ if (!$data) {
       </div>
 
       <br>
-      <p>É possivel acessar um relatório detalhado acessando esta <b><a href="relatorio.html?report_id=" {{$data->report_id}}>página</a></b></p>
+      <p>É possivel acessar um relatório detalhado acessando esta <b><a href="{{env('APP_URL_FRONT') . 'report?report_id=' . $data->report_id}}">página</a></b></p>
     </div>
   </div>
 </div>
