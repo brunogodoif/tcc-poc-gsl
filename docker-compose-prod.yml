@@ -115,8 +115,8 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-servicos-cliente
     restart: unless-stopped
-    ports:
-      - "9093:80"
+    #ports:
+    #  - "9093:80"
     depends_on:
       - service-servicos-cliente
     networks:
@@ -145,8 +145,8 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gestao-estrategia
     restart: unless-stopped
-    ports:
-      - "9094:80"
+    #ports:
+    #  - "9094:80"
     depends_on:
       - service-gestao-estrategia
     networks:
@@ -175,8 +175,8 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-dw-bi
     restart: unless-stopped
-    ports:
-      - "9095:80"
+    #ports:
+    #  - "9095:80"
     depends_on:
       - service-dw-bi
     networks:
