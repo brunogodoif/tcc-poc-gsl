@@ -10,7 +10,7 @@ class ServiceGestaoEEstrategiaController extends Controller
 
     /**
      * @OA\Get(
-     * path="/shippingcompany/objectstracking",
+     * path="/report/{report_id}",
      * summary="UC03 - Rastreio de objetos/mercadorias da origem ao destino",
      * description="Retorna a URL do  dashboard em PowerBI",
      * operationId="UC03-1",
@@ -27,7 +27,7 @@ class ServiceGestaoEEstrategiaController extends Controller
      *    response=200,
      *    description="Retorno dos dados",
      *    @OA\JsonContent(
-     *       @OA\Property(property="url",type="string",example="https://app.powerbi.com/view?r=eyJrIjoiZjUwZTNiM2MtZDY0Ni00Yzg1LTk3N2MtMTc1OTIyYWEzMzIxIiwidCI6ImU4NWM1NmQ3LTE1MDUtNDhjNy1hMjZjLWRlYWU5MzNmNjAwYSJ9",
+     *       @OA\Property(property="url",type="string",example="https://app.powerbi.com/view?r=eyJrIjoiZjUwZTNiM2MtZDY0Ni00Yzg1LTk3N2MtMTc1OTIyYWEzMzIxIiwidCI6ImU4NWM1NmQ3LTE1MDUtNDhjNy1hMjZjLWRlYWU5MzNmNjAwYSJ9"),
      *      )
      *    ),
      * @OA\Response(

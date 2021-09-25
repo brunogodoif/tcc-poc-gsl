@@ -167,6 +167,88 @@
                 }
             }
         },
+        "/report/{report_id}": {
+            "get": {
+                "tags": [
+                    "UC03"
+                ],
+                "summary": "UC03 - Rastreio de objetos/mercadorias da origem ao destino",
+                "description": "Retorna a URL do  dashboard em PowerBI",
+                "operationId": "UC03-1",
+                "requestBody": {
+                    "description": "Os valores abaixo sendo informados serão utilizados para busca dos dados",
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "report_id": {
+                                        "type": "int",
+                                        "example": "20210825"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Retorno dos dados",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "url": {
+                                            "type": "string",
+                                            "example": "https://app.powerbi.com/view?r=eyJrIjoiZjUwZTNiM2MtZDY0Ni00Yzg1LTk3N2MtMTc1OTIyYWEzMzIxIiwidCI6ImU4NWM1NmQ3LTE1MDUtNDhjNy1hMjZjLWRlYWU5MzNmNjAwYSJ9"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Parâmetros informados são inválidos ou estão em formato inválido",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Invalid parameters"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Falha de servidor",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "-> Mensagem com erro de processamento do servidor <-"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearer": []
+                    }
+                ]
+            }
+        },
         "/shippingcompany/objectstracking": {
             "get": {
                 "tags": [
