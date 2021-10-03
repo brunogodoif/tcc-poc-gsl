@@ -39,9 +39,10 @@ class DistanceMatrixApiService
                 throw new Exception("DistanceMatrix API request failed");
             }
         } catch (\Exception $th) {
-            if ($th->getMessage() != '') {
+            /* if ($th->getMessage() != '') {
                 return ["message" => $th->getMessage()];
             }
+           */
             return false;
         }
     }

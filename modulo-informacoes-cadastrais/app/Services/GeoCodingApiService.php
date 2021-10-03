@@ -37,9 +37,10 @@ class GeoCodingApiService
                 throw new Exception("GeoCoding API request failed");
             }
         } catch (\Exception $th) {
-            if ($th->getMessage() != '') {
+            /* if ($th->getMessage() != '') {
                 return ["message" => $th->getMessage()];
             }
+           */
             return false;
         }
     }
