@@ -22,7 +22,7 @@ class ServiceInformacoesCadastraisController extends Controller
      *    @OA\JsonContent(
      *       @OA\Property(property="expected_delivery_date", type="string", example="2021-09-11 - 2021-10-11"),
      *       @OA\Property(property="type_transport", type="string", example="Van | Truck"),
-     *       @OA\Property(property="status", type="string", example="a | b | c")
+     *       @OA\Property(property="status", type="string", example="AGUARDANDO RETIRADA | EM TRÂNSITO | ENTREGUE")
      *    ),
      * ),
      * @OA\Response(

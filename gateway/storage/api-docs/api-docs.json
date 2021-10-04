@@ -274,7 +274,7 @@
                                     },
                                     "status": {
                                         "type": "string",
-                                        "example": "a | b | c"
+                                        "example": "AGUARDANDO RETIRADA | EM TRÂNSITO | ENTREGUE"
                                     }
                                 },
                                 "type": "object"
