@@ -30,7 +30,6 @@ class TrackingObjectsService
         return [
             'data' => $Objects,
             'total' => $Objects->count(),
-            'query' => $filters
         ];
     }
 
@@ -51,7 +50,6 @@ class TrackingObjectsService
         return [
             'data' => $Objects,
             'total' => $Objects->count(),
-            'query' => $filters
         ];
     }
 
@@ -60,8 +58,21 @@ class TrackingObjectsService
     private function addFilters(array $filters, Objects $Objects)
     {
         if (count($filters) > 0) {
+
             if (isset($filters['tracking_code']) && $filters['tracking_code'] != '') {
                 $Objects = $Objects->whereTrackingCode($filters['tracking_code']);
+            }
+
+            if (isset($filters['status']) && $filters['status'] != '') {
+                $Objects = $Objects->whereStatus($filters['status']);
+            }
+
+            if (isset($filters['type_transport']) && $filters['type_transport'] != '') {
+                $Objects = $Objects->whereTypeTransport($filters['type_transport']);
+            }
+
+            if (isset($filters['expected_delivery_date']) && $filters['expected_delivery_date'] != '') {
+                $Objects = $Objects->whereBetween('expected_delivery_date',explode(" - ",$filters['expected_delivery_date']));
             }
         }
         return $Objects;

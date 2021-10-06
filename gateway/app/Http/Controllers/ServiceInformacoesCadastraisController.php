@@ -64,7 +64,6 @@ class ServiceInformacoesCadastraisController extends Controller
     }
      *},description="User notification settings"),
      *       @OA\Property(property="total", type="int", example="3"),
-     *       @OA\Property(property="query", type="object", example="valores informados na requisição"),
      *        )
      *     ),
      * @OA\Response(
@@ -139,7 +138,6 @@ class ServiceInformacoesCadastraisController extends Controller
             }}
         }},description="User notification settings"),
      *       @OA\Property(property="total", type="int", example="3"),
-     *       @OA\Property(property="query", type="object", example="valores informados na requisição"),
      *        )
      *     ),
      * @OA\Response(

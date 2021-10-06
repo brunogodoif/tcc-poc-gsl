@@ -330,10 +330,6 @@
                                         "total": {
                                             "type": "int",
                                             "example": "3"
-                                        },
-                                        "query": {
-                                            "type": "object",
-                                            "example": "valores informados na requisição"
                                         }
                                     },
                                     "type": "object"
@@ -460,10 +456,6 @@
                                         "total": {
                                             "type": "int",
                                             "example": "3"
-                                        },
-                                        "query": {
-                                            "type": "object",
-                                            "example": "valores informados na requisição"
                                         }
                                     },
                                     "type": "object"
