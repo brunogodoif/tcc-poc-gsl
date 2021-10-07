@@ -8,12 +8,12 @@ services:
     restart: unless-stopped
     working_dir: /var/www/
     deploy:
-      replicas: 1
+      replicas: 5
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 64M
+          memory: 128M
     links:
       - postgresql-db-auth
       - nginx-service-informacoes-cadastrais
@@ -43,6 +43,13 @@ services:
       dockerfile: ./docker-compose/Dockerfile.nginx
     image: nginx-service-gateway
     restart: unless-stopped
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          memory: 256M
+        reservations:
+          memory: 128M
     ports:
       - "9091:80"
     depends_on:
@@ -60,9 +67,9 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 64M
+          memory: 128M
     links:
       - postgresql-db-shippingcompany
     networks:
@@ -102,9 +109,9 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 64M
+          memory: 128M
     networks:
       - gateway-network
   nginx-service-servicos-cliente:
@@ -132,9 +139,9 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 64M
+          memory: 128M
     networks:
       - gateway-network
   nginx-service-gestao-estrategia:
@@ -162,9 +169,9 @@ services:
       replicas: 1
       resources:
         limits:
-          memory: 128M
+          memory: 256M
         reservations:
-          memory: 64M
+          memory: 128M
     networks:
       - gateway-network
   nginx-service-dw-bi:
