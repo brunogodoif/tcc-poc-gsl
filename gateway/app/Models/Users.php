@@ -2,14 +2,11 @@
 
 namespace App\Models;
 
-use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\UserProfiles;
 use Illuminate\Database\Eloquent\Model;
 
 class Users extends Model
 {
-    use HasApiTokens, HasFactory, Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -43,4 +40,9 @@ class Users extends Model
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function getProfile()
+    {
+        return $this->hasOne(UserProfiles::class, 'id', 'profile_id');
+    }
 }
