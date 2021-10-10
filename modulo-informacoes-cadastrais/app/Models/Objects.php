@@ -12,6 +12,11 @@ class Objects extends Model
     protected $table = "objects.objects";
 
     protected $primaryKey = 'id';
+    
+    protected $fillable = [
+        'description',
+    ];
+
 
     public function tracking()
     {

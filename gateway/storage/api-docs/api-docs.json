@@ -5,7 +5,7 @@
         "version": "1.0.0"
     },
     "paths": {
-        "/auth": {
+        "/api/auth": {
             "get": {
                 "tags": [
                     "auth"
@@ -13,27 +13,27 @@
                 "summary": "Valida a autenticação",
                 "description": "Faz a validação do token JWT informado, validando se o token é válido e se o usuário esta autorizado a acessar os serviços da plataforma",
                 "operationId": "authLogin-2",
-                "requestBody": {
-                    "description": "Token JWT recebido da requisição POST /auth",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "token",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "token": {
-                                        "type": "string",
-                                        "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2N..."
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "tags",
+                        "in": "query",
+                        "description": "Token JWT recebido da requisição POST /auth",
+                        "required": true,
+                        "schema": {
+                            "required": [
+                                "token",
+                                "password"
+                            ],
+                            "properties": {
+                                "token": {
+                                    "type": "string",
+                                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2N..."
+                                }
+                            },
+                            "type": "object"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Ok, Token validado e usuário autenticado",
@@ -167,7 +167,7 @@
                 }
             }
         },
-        "/report/{report_id}": {
+        "/api/report": {
             "get": {
                 "tags": [
                     "UC03"
@@ -175,23 +175,19 @@
                 "summary": "UC03 - Rastreio de objetos/mercadorias da origem ao destino",
                 "description": "Retorna a URL do  dashboard em PowerBI",
                 "operationId": "UC03-1",
-                "requestBody": {
-                    "description": "Os valores abaixo sendo informados serão utilizados para busca dos dados",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "report_id": {
-                                        "type": "int",
-                                        "example": "20210825"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "parameter": "report_id",
+                        "name": "report_id",
+                        "in": "query",
+                        "description": "ID de um relatório",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "20210825"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Retorno dos dados",
@@ -244,12 +240,12 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearer_token": []
                     }
                 ]
             }
         },
-        "/shippingcompany/objectstracking": {
+        "/api/shippingcompany/objectstracking": {
             "get": {
                 "tags": [
                     "UC01"
@@ -257,31 +253,41 @@
                 "summary": "UC01 - Rastreio de objetos/mercadorias da origem ao destino",
                 "description": "Retorna informações de objetos/mercadorias em transporte",
                 "operationId": "UC01-1",
-                "requestBody": {
-                    "description": "Os valores abaixo sendo informados serão utilizados para busca dos dados",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "expected_delivery_date": {
-                                        "type": "string",
-                                        "example": "2021-09-11 - 2021-10-11"
-                                    },
-                                    "type_transport": {
-                                        "type": "string",
-                                        "example": "Van | Truck"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "example": "AGUARDANDO RETIRADA | EM TRÂNSITO | ENTREGUE"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "parameter": "expected_delivery_date",
+                        "name": "expected_delivery_date",
+                        "in": "query",
+                        "description": "Filtro por periodo de data estimada de entrega",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "2021-09-11 - 2021-10-11"
+                        }
+                    },
+                    {
+                        "parameter": "type_transport",
+                        "name": "type_transport",
+                        "in": "query",
+                        "description": "Tipo de transporte utilizado na entrega, sendo as opções Van | Truck",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Van | Truck"
+                        }
+                    },
+                    {
+                        "parameter": "status",
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status da entrega, sendo as opções AGUARDANDO RETIRADA | EM TRÂNSITO | ENTREGUE",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "AGUARDANDO RETIRADA | EM TRÂNSITO | ENTREGUE"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Retorno dos dados",
@@ -372,12 +378,12 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearer_token": []
                     }
                 ]
             }
         },
-        "/shippingcompany/objectstracking/{tracking_code}": {
+        "/api/shippingcompany/objectstracking?tracking_code": {
             "get": {
                 "tags": [
                     "UC01"
@@ -385,23 +391,19 @@
                 "summary": "UC01 - Rastreio de objetos/mercadorias da origem ao destino com datalhemento do rastreio",
                 "description": "Retorna informações de um objeto/mercadoria juntamente com dados de rastreio",
                 "operationId": "UC01-2",
-                "requestBody": {
-                    "description": "O código de rastreio é obrigatório para o funcionamento desta funcionalidade",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "tracking_code": {
-                                        "type": "string",
-                                        "example": "GLS-BR-202109092040"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "parameter": "tracking_code",
+                        "name": "tracking_code",
+                        "in": "query",
+                        "description": "O código de rastreio é obrigatório para o funcionamento desta funcionalidade",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "GLS-BR-202109092040"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Retorno dos dados",
@@ -498,12 +500,12 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearer_token": []
                     }
                 ]
             }
         },
-        "/shippingcompany/calculateshipping": {
+        "/api/shippingcompany/calculateshipping": {
             "get": {
                 "tags": [
                     "UC02"
@@ -511,47 +513,85 @@
                 "summary": "UC02 – Cálculo de frete",
                 "description": "Retorna o cálculo de frete e tempo estimado de entrega de um objeto/mercadorias com base em suas medidas e peso e distancia entre ponto de origem e destino",
                 "operationId": "UC02",
-                "requestBody": {
-                    "description": "Abaixo os valores necessários para o calculo do frete",
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "weight": {
-                                        "type": "string",
-                                        "example": "98.00"
-                                    },
-                                    "invoice": {
-                                        "type": "string",
-                                        "example": "725"
-                                    },
-                                    "width": {
-                                        "type": "string",
-                                        "example": "0.90"
-                                    },
-                                    "length": {
-                                        "type": "string",
-                                        "example": "1.50"
-                                    },
-                                    "height": {
-                                        "type": "string",
-                                        "example": "0.90"
-                                    },
-                                    "addressSource": {
-                                        "type": "string",
-                                        "example": "Av. Contorno, Nº 165 - Setor Norte Ferroviário, Goiânia - GO"
-                                    },
-                                    "addressDestiny": {
-                                        "type": "string",
-                                        "example": "R. Carlos Leal Evans, 252 - Jardim Santa Francisca, Guarulhos - SP"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "parameter": "weight",
+                        "name": "weight",
+                        "in": "query",
+                        "description": "Peso da mercadoria em kg",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "98.00"
+                        }
+                    },
+                    {
+                        "parameter": "invoice",
+                        "name": "invoice",
+                        "in": "query",
+                        "description": "Total da nota fiscal da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "725.00"
+                        }
+                    },
+                    {
+                        "parameter": "width",
+                        "name": "width",
+                        "in": "query",
+                        "description": "Largura da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "0.90"
+                        }
+                    },
+                    {
+                        "parameter": "length",
+                        "name": "length",
+                        "in": "query",
+                        "description": "Comprimento da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "1.50"
+                        }
+                    },
+                    {
+                        "parameter": "height",
+                        "name": "height",
+                        "in": "query",
+                        "description": "Altura da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "0.90"
+                        }
+                    },
+                    {
+                        "parameter": "addressSource",
+                        "name": "addressSource",
+                        "in": "query",
+                        "description": "Endereço de origem da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Av. Contorno, Nº 165 - Setor Norte Ferroviário, Goiânia - GO"
+                        }
+                    },
+                    {
+                        "parameter": "addressDestiny",
+                        "name": "addressDestiny",
+                        "in": "query",
+                        "description": "Endereço de destino da mercadoria",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "R. Carlos Leal Evans, 252 - Jardim Santa Francisca, Guarulhos - SP"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Retorno do frete calculado e tempo estimado de entrega",
@@ -608,9 +648,19 @@
                 },
                 "security": [
                     {
-                        "bearer": []
+                        "bearer_token": []
                     }
                 ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearer_token": {
+                "type": "apiKey",
+                "description": "Enter token in format (Bearer <token>)",
+                "name": "Authorization",
+                "in": "header"
             }
         }
     },

@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     /**
      * @OA\Post(
-     * path="/auth",
+     * path="/api/auth",
      * summary="Faz a autenticação no sistema",
      * description="Autenticação na plataforma com base no e-mail e senha de um usuário, token JWT será retornado em caso de usuário autenticado. Este token deverá ser enviado em todas as requisições dos demais serviços.",
      * operationId="authLogin-1",
@@ -57,15 +57,17 @@ class AuthController extends Controller
 
     /**
      * @OA\Get(
-     * path="/auth",
+     * path="/api/auth",
      * summary="Valida a autenticação",
      * description="Faz a validação do token JWT informado, validando se o token é válido e se o usuário esta autorizado a acessar os serviços da plataforma",
      * operationId="authLogin-2",
      * tags={"auth"},
-     * @OA\RequestBody(
-     *    required=true,
+     * @OA\Parameter(
+     *    name="tags",
+     *    in="query",
      *    description="Token JWT recebido da requisição POST /auth",
-     *    @OA\JsonContent(
+     *    required=true,
+     *    @OA\Schema(
      *       required={"token","password"},
      *       @OA\Property(property="token", type="string", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC9sb2N..."),
      *    ),

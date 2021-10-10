@@ -5,23 +5,33 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
+/**
+ * @OAS\SecurityScheme(
+ *      securityScheme="bearer_token",
+ *      type="http",
+ *      scheme="bearer"
+ * )
+ */
 class ServiceGestaoEEstrategiaController extends Controller
 {
 
     /**
      * @OA\Get(
-     * path="/report/{report_id}",
+     * path="/api/report",
      * summary="UC03 - Rastreio de objetos/mercadorias da origem ao destino",
      * description="Retorna a URL do  dashboard em PowerBI",
      * operationId="UC03-1",
      * tags={"UC03"},
-     * security={{"bearer": {} }},
-     * @OA\RequestBody(
+     * security={{"bearer_token":{}}},
+     * @OA\Parameter(
+     *    parameter="report_id",
+     *    name="report_id",
+     *    description="ID de um relatório",
+     *    in="query",
      *    required=true,
-     *    description="Os valores abaixo sendo informados serão utilizados para busca dos dados",
-     *    @OA\JsonContent(
-     *       @OA\Property(property="report_id", type="int", example="20210825"),
-     *    ),
+     *   @OA\Schema(
+     *     type="string", example="20210825"
+     *   ),
      * ),
      * @OA\Response(
      *    response=200,
@@ -47,13 +57,14 @@ class ServiceGestaoEEstrategiaController extends Controller
      * )
      */
 
-    public function getReport(Request $request, $report_id = null)
+    public function getReport(Request $request)
     {
+
 
         $url = 'nginx-service-gestao-estrategia/api/report';
 
-        if ($report_id != null or $report_id != '') {
-            $url .= '/' . $report_id;
+        if ($request->has('report_id') && $request->get('report_id') != '') {
+            $url .= '/' . $request->get('report_id');
         }
 
         $response = Http::get($url, $request->all());
@@ -63,5 +74,4 @@ class ServiceGestaoEEstrategiaController extends Controller
             $response->getStatusCode()
         );
     }
-
 }
